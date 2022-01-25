@@ -30,32 +30,77 @@
 #ifndef BIOAMP_EXG_PILL_H_
 #define BIOAMP_EXG_PILL_H_
 
-#define BUFFER_SIZE_EMG 128
-
 #if (ARDUINO >= 100)
 #include "Arduino.h"
 #else
 #include "WProgram.h"
+
+// #include <ecg.h>
+// #include <eog.h>
+// #include <emg.h>
+// #include <eeg.h>
+
 #endif
 
-class LibEXG{
+#define EMG 1
+#define EOG 2
+#define EEG 3
+#define ECG 4
+#define SAMPLE_RATE_ECG 125
+#define SAMPLE_RATE_EEG 256
+#define SAMPLE_RATE_EMG 500
+#define SAMPLE_RATE_EOG 75
+
+class eog
+{
 public:
-  // constructor
-  LibEXG(bool displayMsg = false);
-
-  // Methods
-  float getecg(int INPUT_PIN);
-  float geteeg(int INPUT_PIN);
-  float geteog(int INPUT_PIN);
-  float getemg(int INPUT_PIN);
-
-  float EEGFilter(float input);
-  float EOGFilter(float input);
-  float ECGFilter(float input);
-  float EMGFilter(float input);
-
+  void attachEOG(int pin, int sample_rate);
+  float EOGfilter(float input);
+  int calcDelayEOG(int interval);
+  int input_pin;
 private:
+float z1 , z2;
+    int _sampleRate;
+};
 
+class emg
+{
+public:
+  void attachEMG(int pin, int sample_rate);
+  float EMGfilter(float input);
+  int calcDelayEMG(int interval);
+  int input_pin;
+private:
+float z1 , z2;
+
+    int _sampleRate;
+};
+
+class eeg
+{
+public:
+  void attachEEG(int pin, int sample_rate);
+  float EEGfilter(float input);
+  int calcDelayEEG(int interval);
+  int input_pin;
+private:
+float z1 , z2;
+
+    int _sampleRate;
+};
+
+class ecg
+{
+public:
+  void attachECG(int pin, int sample_rate);
+  float ECGfilter(float input);
+  int calcDelayECG(int interval);
+  int input_pin;
+private:
+float z1 , z2;
+
+    
+    int _sampleRate;
 };
 
 #endif

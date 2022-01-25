@@ -27,21 +27,23 @@
 // SOFTWARE.
 
 
-#include <Arduino.h>
 #include <libexg.h>
 
-//#define SAMPLE_RATE 125
-#define BAUD_RATE 112500
-int INPUT_PIN = 36;
+#define BAUD_RATE 115200
 
-LibEXG libEXG(true);
+eeg Eeg;
 
 void setup(){
-  // put your setup code here, to run once:
+  Eeg.attachEEG(A0, SAMPLE_RATE_EEG);
   Serial.begin(BAUD_RATE);
 }
 
 void loop(){
-  // put your main code here, to run repeatedly:
-  libEXG.geteeg(INPUT_PIN);
+  unsigned long start_time = micros();
+  int data;
+  data = analogRead(Eeg.input_pin);
+  int signal = Eeg.EEGfilter(data);
+  Serial.println(signal);
+  unsigned long interval = micros() - start_time;
+  delay(Eeg.calcDelayEEG(interval));
 }

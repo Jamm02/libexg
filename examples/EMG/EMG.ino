@@ -27,21 +27,24 @@
 // SOFTWARE.
 
 
-#include <Arduino.h>
 #include <libexg.h>
 
-//#define SAMPLE_RATE 125
 #define BAUD_RATE 115200
-int INPUT_PIN = 36;
 
-LibEXG libEXG(true);
+emg Emg;
+
 
 void setup(){
-  // put your setup code here, to run once:
+  Emg.attachEMG(A0, SAMPLE_RATE_EMG);
   Serial.begin(BAUD_RATE);
 }
 
 void loop(){
-  // put your main code here, to run repeatedly:
-  libEXG.getemg(INPUT_PIN);
+  unsigned long start_time = micros();
+  int data;
+  data = analogRead(Emg.input_pin);
+  int signal = Emg.EMGfilter(data);
+  Serial.println(signal);
+  unsigned long interval = micros() - start_time;
+  delay(Emg.calcDelayEMG(interval));
 }

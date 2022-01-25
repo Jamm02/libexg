@@ -29,20 +29,31 @@
 #include <libexg.h>
 
 #define BAUD_RATE 115200
+#define CHANNELS 2
+emg Emg[CHANNELS];
 
-ecg Ecg;
+void setup()
+{
+    Emg[0].attachEMG(A0, SAMPLE_RATE_EMG);
+    Emg[1].attachEMG(A1, SAMPLE_RATE_EMG);
 
-void setup(){
-  Ecg.attachECG(A0, SAMPLE_RATE_ECG);
-  Serial.begin(BAUD_RATE);
+    Serial.begin(BAUD_RATE);
 }
 
-void loop(){
-  unsigned long start_time = micros();
-  int data;
-  data = analogRead(Ecg.input_pin);
-  int signal = Ecg.ECGfilter(data);
-  Serial.println(signal);
-  unsigned long interval = micros() - start_time;
-  delay(Ecg.calcDelayECG(interval));
+void loop()
+{
+    unsigned long start_time = micros();
+    for (int i = 0; i < CHANNELS; i++)
+    {
+        int data;
+        data = analogRead(Emg[i].input_pin);
+        int signal = Emg[i].EMGfilter(data);
+        Serial.print(signal);
+        Serial.print(" ");
+    }
+    
+    unsigned long interval = micros() - start_time;
+    delay(Emg[0].calcDelayEMG(interval));
+
+    Serial.println();
 }

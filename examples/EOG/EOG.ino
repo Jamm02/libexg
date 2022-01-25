@@ -26,21 +26,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <Arduino.h>
 #include <libexg.h>
 
-//#define SAMPLE_RATE 125
 #define BAUD_RATE 115200
-int INPUT_PIN = 36;
 
-LibEXG libEXG(true);
+eog Eog;
 
 void setup(){
-  // put your setup code here, to run once:
+  Eog.attachEOG(A0, SAMPLE_RATE_EOG);
   Serial.begin(BAUD_RATE);
 }
 
 void loop(){
-  // put your main code here, to run repeatedly:
-  libEXG.geteog(INPUT_PIN);
+  unsigned long start_time = micros();
+  int data;
+  data = analogRead(Eog.input_pin);
+  int signal = Eog.EOGfilter(data);
+  Serial.println(signal);
+  unsigned long interval = micros() - start_time;
+  delay(Eog.calcDelayEOG(interval));
 }
