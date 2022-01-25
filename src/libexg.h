@@ -26,7 +26,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 #ifndef BIOAMP_EXG_PILL_H_
 #define BIOAMP_EXG_PILL_H_
 
@@ -54,52 +53,50 @@
 class eog
 {
 public:
-  void attachEOG(int pin, int sample_rate);
-  float EOGfilter(float input);
-  int calcDelayEOG(int interval);
-  int input_pin;
+    void attachEOG(int pin, int sample_rate);
+    float EOGfilter(float input);
+    int calcDelayEOG(int interval);
+    int input_pin;
+
 private:
-float z1 , z2;
     int _sampleRate;
 };
 
 class emg
 {
 public:
-  void attachEMG(int pin, int sample_rate);
-  float EMGfilter(float input);
-  int calcDelayEMG(int interval);
-  int input_pin;
-private:
-float z1 , z2;
+    void attachEMG(int pin, int sample_rate);
+    float EMGfilter(float input);
+    int calcDelayEMG(int interval);
+    int input_pin;
 
+private:
+    float z1;
+    float z2;
     int _sampleRate;
 };
 
 class eeg
 {
 public:
-  void attachEEG(int pin, int sample_rate);
-  float EEGfilter(float input);
-  int calcDelayEEG(int interval);
-  int input_pin;
-private:
-float z1 , z2;
+    void attachEEG(int pin, int sample_rate);
+    float EEGfilter(float input);
+    int calcDelayEEG(int interval);
+    int input_pin;
 
+private:
     int _sampleRate;
 };
 
 class ecg
 {
 public:
-  void attachECG(int pin, int sample_rate);
-  float ECGfilter(float input);
-  int calcDelayECG(int interval);
-  int input_pin;
-private:
-float z1 , z2;
+    void attachECG(int pin, int sample_rate);
+    float ECGfilter(float input);
+    int calcDelayECG(int interval);
+    int input_pin;
 
-    
+private:
     int _sampleRate;
 };
 
